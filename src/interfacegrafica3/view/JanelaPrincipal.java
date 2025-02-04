@@ -20,6 +20,7 @@ public class JanelaPrincipal extends javax.swing.JFrame {
 
     JanelaCadastro janelaCadastro;
     JanelaCadastroUF janelaCadastroUF;
+    JanelaCadastroFornecedor janelaCadastroFornecedor;
     public List<Pessoa> lstPessoa;
     public int ultimoId;
     private Conexao conexao;
