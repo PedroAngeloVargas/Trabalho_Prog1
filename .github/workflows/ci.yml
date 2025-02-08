@@ -25,6 +25,9 @@ jobs:
       - name: Checkout código do repositório
         uses: actions/checkout@v4
 
+      - name: Listar arquivos clonados
+        run: ls -R  
+
       - name: Configurar o Java
         uses: actions/setup-java@v3
         with:
@@ -61,11 +64,12 @@ jobs:
           );"
 
       - name: Compilar com Maven
-        run: mvn clean install -DskipTests=false
+        run: mvn -f InterfaceGrafica3/pom.xml clean install -DskipTests=false
 
       - name: Executar testes unitários
-        run: mvn test
+        run: mvn -f InterfaceGrafica3/pom.xml test
 
       - name: Exibir logs se houver falhas
         if: failure()
-        run: cat target/surefire-reports/*.txt
+        run: cat InterfaceGrafica3/target/surefire-reports/*.txt
+
