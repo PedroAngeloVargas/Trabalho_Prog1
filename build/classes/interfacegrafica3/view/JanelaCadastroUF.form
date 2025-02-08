@@ -126,9 +126,6 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="txtNomeEstado">
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtNomeEstadoActionPerformed"/>
-      </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel2">
       <Properties>
@@ -178,9 +175,6 @@
       </Events>
     </Component>
     <Component class="javax.swing.JTextField" name="txtId">
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtIdActionPerformed"/>
-      </Events>
     </Component>
   </SubComponents>
 </Form>

@@ -16,35 +16,31 @@ import java.sql.ResultSet;
  */
 public class UfRepository implements Crud<Uf> {
 
-    @Override
-    public boolean inserir(Connection connection, Uf uf) {
-        PreparedStatement stmt = null;
-        try{
-            String comando = "INSERT INTO uf(nome, sigla) " +
-                             "VALUES(?, ?)";
-            stmt = connection.prepareStatement(comando);
-            stmt.setString(1, uf.getNome());
-            stmt.setString(2, uf.getSigla());
-            stmt.executeUpdate();
-            stmt.close();
-            return true;
-        }catch(Exception ex){
-            JOptionPane.showMessageDialog(
-                    null,
-                    "Erro ao inserir uf: " + ex.getMessage(),
-                    "Erro ao inserir",
-                    JOptionPane.ERROR_MESSAGE
-            );
-            return false;
-        }
+@Override
+public boolean inserir(Connection connection, Uf uf) {
+    String comando = "INSERT INTO uf (nome_estado, sigla) VALUES (?, ?)";
+    try (PreparedStatement stmt = connection.prepareStatement(comando)) {
+        stmt.setString(1, uf.getNome());
+        stmt.setString(2, uf.getSigla());
+        stmt.executeUpdate();
+        return true;
+    } catch (Exception ex) {
+        JOptionPane.showMessageDialog(
+                null,
+                "Erro ao inserir UF: " + ex.getMessage(),
+                "Erro ao inserir",
+                JOptionPane.ERROR_MESSAGE
+        );
+        return false;
     }
+}
 
     @Override
     public boolean atualizar(Connection connection, Uf uf) {
         PreparedStatement stmt = null;
         try{
             String comando = "UPDATE uf SET " +
-                             "nome = ?, sigla = ? " +
+                             "nome_estado = ?, sigla = ? " +
                              "WHERE id = ?";
             stmt = connection.prepareStatement(comando);
             stmt.setString(1, uf.getNome());
@@ -101,7 +97,7 @@ public class UfRepository implements Crud<Uf> {
             if(res != null){
                 while(res.next()){
                     uf.setId(Integer.parseInt(res.getString("id") ));
-                    uf.setNome(res.getString("nome"));
+                    uf.setNome(res.getString("nome_estado"));
                     uf.setSigla(res.getString("sigla"));
                     break;
                 }

@@ -1,36 +1,30 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package interfacegrafica3.repository;
 
 import interfacegrafica3.model.Fornecedor;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import javax.swing.JOptionPane;
 import java.sql.ResultSet;
+import javax.swing.JOptionPane;
 
-/**
- *
- * @author joaol
- */
 public class FornecedorRepository implements Crud<Fornecedor> {
-    
+
     @Override
     public boolean inserir(Connection connection, Fornecedor fornecedor) {
-        PreparedStatement stmt = null;
-        try{
-            String comando = "INSERT INTO fornecedor(categoria) " +
-                             "VALUES(?)";
-            stmt = connection.prepareStatement(comando);
-            stmt.setString(1, fornecedor.getNome());
+        String comando = "INSERT INTO fornecedor (nome_fantasia, razao_social, cnpj, inscricao_estadual, categoria) " +
+                         "VALUES (?, ?, ?, ?, ?)";
+        try (PreparedStatement stmt = connection.prepareStatement(comando)) {
+            stmt.setString(1, fornecedor.getNomeFantasia());
+            stmt.setString(2, fornecedor.getRazaoSocial());
+            stmt.setString(3, fornecedor.getCnpj());
+            stmt.setString(4, fornecedor.getInscricaoEstadual());
+            stmt.setString(5, fornecedor.getCategoria());
+
             stmt.executeUpdate();
-            stmt.close();
             return true;
-        }catch(Exception ex){
+        } catch (Exception ex) {
             JOptionPane.showMessageDialog(
                     null,
-                    "Erro ao inserir Fornecedor: " + ex.getMessage(),
+                    "Erro ao inserir fornecedor: " + ex.getMessage(),
                     "Erro ao inserir",
                     JOptionPane.ERROR_MESSAGE
             );
@@ -40,21 +34,22 @@ public class FornecedorRepository implements Crud<Fornecedor> {
 
     @Override
     public boolean atualizar(Connection connection, Fornecedor fornecedor) {
-        PreparedStatement stmt = null;
-        try{
-            String comando = "UPDATE fornecedor SET " +
-                             "categoria = ?" +
-                             "WHERE id = ?";
-            stmt = connection.prepareStatement(comando);
-            stmt.setString(1, fornecedor.getNome());
-            stmt.setInt(2, fornecedor.getId());
+        String comando = "UPDATE fornecedor SET nome_fantasia = ?, razao_social = ?, cnpj = ?, inscricao_estadual = ?, categoria = ? " +
+                         "WHERE id = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(comando)) {
+            stmt.setString(1, fornecedor.getNomeFantasia());
+            stmt.setString(2, fornecedor.getRazaoSocial());
+            stmt.setString(3, fornecedor.getCnpj());
+            stmt.setString(4, fornecedor.getInscricaoEstadual());
+            stmt.setString(5, fornecedor.getCategoria());
+            stmt.setInt(6, fornecedor.getId());
+
             stmt.executeUpdate();
-            stmt.close();
             return true;
-        }catch(Exception ex){
+        } catch (Exception ex) {
             JOptionPane.showMessageDialog(
                     null,
-                    "Erro ao atualizar Fornecedor: " + ex.getMessage(),
+                    "Erro ao atualizar fornecedor: " + ex.getMessage(),
                     "Erro ao atualizar",
                     JOptionPane.ERROR_MESSAGE
             );
@@ -64,16 +59,12 @@ public class FornecedorRepository implements Crud<Fornecedor> {
 
     @Override
     public boolean deletar(Connection connection, Fornecedor fornecedor) {
-        PreparedStatement stmt = null;
-        try{
-            String comando = "DELETE FROM fornecedor " +
-                             "WHERE id = ?";
-            stmt = connection.prepareStatement(comando);
+        String comando = "DELETE FROM fornecedor WHERE id = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(comando)) {
             stmt.setInt(1, fornecedor.getId());
             stmt.executeUpdate();
-            stmt.close();
             return true;
-        }catch(Exception ex){
+        } catch (Exception ex) {
             JOptionPane.showMessageDialog(
                     null,
                     "Erro ao excluir fornecedor: " + ex.getMessage(),
@@ -86,35 +77,38 @@ public class FornecedorRepository implements Crud<Fornecedor> {
 
     @Override
     public Fornecedor selecionar(Connection connection, String operador, int id) {
-        try{
-            Fornecedor fornecedor = new Fornecedor();
-            PreparedStatement stmt = null;
-            String comando = "SELECT * FROM uf WHERE id " + 
-                             operador + " ? ";
-            if(operador.equals("<"))
-                comando += " ORDER BY id DESC";
-            stmt = connection.prepareStatement(comando);
+        String comando = "SELECT * FROM fornecedor WHERE id " + operador + " ? ";
+        if (operador.equals("<")) {
+            comando += " ORDER BY id DESC";
+        }
+
+        try (PreparedStatement stmt = connection.prepareStatement(comando)) {
             stmt.setInt(1, id);
             ResultSet res = stmt.executeQuery();
-            if(res != null){
-                while(res.next()){
-                    fornecedor.setId(Integer.parseInt(res.getString("id") ));
-                    fornecedor.setCategoria(res.getString("categoria"));
-                    break;
-                }
+
+            if (res.next()) {
+                Fornecedor fornecedor = new Fornecedor();
+                fornecedor.setId(res.getInt("id"));
+                fornecedor.setNomeFantasia(res.getString("nome_fantasia"));
+                fornecedor.setRazaoSocial(res.getString("razao_social"));
+                fornecedor.setCnpj(res.getString("cnpj"));
+                fornecedor.setInscricaoEstadual(res.getString("inscricao_estadual"));
+                fornecedor.setCategoria(res.getString("categoria"));
+
+                return fornecedor;
             }
-            return fornecedor;
-        }catch(Exception ex){            
-            return null;
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(
+                    null,
+                    "Erro ao buscar fornecedor: " + ex.getMessage(),
+                    "Erro ao buscar",
+                    JOptionPane.ERROR_MESSAGE
+            );
         }
-        }
+        return null;
     }
-    
-    
-    
-    
-    
-    
+}
+
     
     
 

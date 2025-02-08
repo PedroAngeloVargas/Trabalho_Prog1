@@ -32,6 +32,8 @@ public class JanelaPrincipal extends javax.swing.JFrame {
      */
     public JanelaPrincipal() {
         initComponents();
+        setSize(600, 500); 
+        setLocationRelativeTo(null);
         lstPessoa = new ArrayList<>();
         ultimoId = 0;
         conexao = new Conexao(
