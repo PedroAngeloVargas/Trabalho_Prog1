@@ -5,6 +5,10 @@
         <group>
             <file>file:/home/pedro/Workspace/Arquivos_Aleatorios/InterfaceGrafica3/src/interfacegrafica3/view/JanelaCadastroFornecedor.java</file>
             <file>file:/home/pedro/Workspace/Arquivos_Aleatorios/InterfaceGrafica3/src/interfacegrafica3/view/JanelaPrincipal.java</file>
+            <file>file:/home/pedro/Workspace/Arquivos_Aleatorios/InterfaceGrafica3/src/interfacegrafica3/view/JanelaCadastroUF.java</file>
+            <file>file:/home/pedro/Workspace/Arquivos_Aleatorios/InterfaceGrafica3/src/interfacegrafica3/model/Fornecedor.java</file>
+            <file>file:/home/pedro/Workspace/Arquivos_Aleatorios/InterfaceGrafica3/src/interfacegrafica3/repository/FornecedorRepository.java</file>
+            <file>file:/home/pedro/Workspace/Arquivos_Aleatorios/InterfaceGrafica3/src/interfacegrafica3/repository/UfRepository.java</file>
         </group>
     </open-files>
 </project-private>

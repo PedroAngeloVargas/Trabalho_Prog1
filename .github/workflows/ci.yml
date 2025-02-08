@@ -1,0 +1,74 @@
+name: CI - Pipeline do projeto :)
+
+on:
+  workflow_dispatch: 
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: cadastro
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+
+    steps:
+      - name: Checkout código do repositório
+        uses: actions/checkout@v4
+
+      - name: Configurar o Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Instalar dependências do MySQL
+        run: sudo apt-get install -y libmysql-java
+
+      - name: Aguardar MySQL iniciar
+        run: sleep 15
+
+      - name: Criar Banco de Dados e Tabelas
+        run: |
+          mysql -h 127.0.0.1 -u root -proot -e "
+          CREATE DATABASE IF NOT EXISTS cadastro;
+          USE cadastro;
+          CREATE TABLE IF NOT EXISTS cadastro_pessoa (
+              id INT AUTO_INCREMENT PRIMARY KEY,
+              nome VARCHAR(100) NOT NULL,
+              endereco VARCHAR(255),
+              email VARCHAR(100),
+              telefone VARCHAR(20)
+          );
+          CREATE TABLE IF NOT EXISTS fornecedor (
+              id INT AUTO_INCREMENT PRIMARY KEY,
+              nome_fantasia VARCHAR(100) NOT NULL,
+              razao_social VARCHAR(100) NOT NULL,
+              cnpj VARCHAR(18) NOT NULL UNIQUE,
+              inscricao_estadual VARCHAR(20) NOT NULL,
+              categoria VARCHAR(50) NOT NULL
+          );
+          CREATE TABLE IF NOT EXISTS uf (
+              id INT AUTO_INCREMENT PRIMARY KEY,
+              nome_estado VARCHAR(100) NOT NULL,
+              sigla CHAR(2) NOT NULL UNIQUE
+          );"
+
+      - name: Compilar com Maven
+        run: mvn clean install -DskipTests=false
+
+      - name: Executar testes unitários
+        run: mvn test
+
+      - name: Exibir logs se houver falhas
+        if: failure()
+        run: cat target/surefire-reports/*.txt
