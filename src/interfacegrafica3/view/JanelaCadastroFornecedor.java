@@ -14,7 +14,7 @@ import javax.swing.JOptionPane;
 public class JanelaCadastroFornecedor extends javax.swing.JInternalFrame {
 
     private static JanelaCadastroFornecedor instancia;
-    private JanelaPrincipal janelaPrincipal;
+    public JanelaPrincipal janelaPrincipal;
     
     public JanelaCadastroFornecedor(JanelaPrincipal janelaPrincipal) {
         initComponents();
