@@ -9,7 +9,7 @@ import javax.swing.JOptionPane;
 
 /**
  *
- * @author joaol
+ * @author joaol Pedro Angelo Tellaroli Vargas
  */
 public class JanelaCadastroFornecedor extends javax.swing.JInternalFrame {
 

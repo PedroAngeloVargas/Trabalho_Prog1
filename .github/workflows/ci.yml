@@ -31,9 +31,6 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
-      - name: Instalar dependências do MySQL
-        run: sudo apt-get install -y libmysql-java
-
       - name: Aguardar MySQL iniciar
         run: sleep 15
 
